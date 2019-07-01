@@ -1,45 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string _keyword[50] = {"auto",  "double", "else",   "int",  "struct", "break",
-"switch", "case",   "enum", "register", "typedef", "char",  "extern",   "return",
-"union", "const",   "float",    "short",    "unsigned", "continue", "for",
-"default",  "goto", "sizeof", "do", "if",   "static",   "while", "void",
-"bool", "explicit", "new", "catch", "false",    "operator", "template",
-"class",    "private",  "this", "inline",   "public",   "throw", "signed",
-"delete",   "protected",    "true", "try",  "typename", "using", "long"};
+string _type[10] = {"auto", "double", "int",  "enum", "char", "float", "short", "void",
+"bool", "long"};
 
-bool _isKeyword(string s) {
-    for (int i = 0; i < 50; i++) if (s == _keyword[i]) return true;
+bool _isType(string s) {
+    for (int i = 0; i < 50; i++) if (s == _type[i]) return true;
     return false;
 }
 
 int main() {
     freopen("in.txt", "r", stdin);
-//    freopen("out.txt", "w", stdout);
+    freopen("out.txt", "w", stdout);
+    int t = 0;
     string s, ps, word, met, ret;
-    puts("Methods:");
+    puts("Methods:\n--------");
     while (getline(cin, s)) {
-        stringstream ss(s);
-        vector <string> v;
-        while (ss >> word) {
-            v.push_back(word);
-        }
-        bool flag = false;
-        for (int i = 0; i < v.size(); i++) {
-                if (_isKeyword(v[i])) {
-                    ret = v[i];
-                    for (int k = 0; k < v[i+1].size(); k++) {
-                        if (v[i+1][k] == '(') {
-                            flag = true;
-                            met = v[i+1];
-                            for (int j = i+2; j < v.size(); j++) {
-                                met = met + v[j];
+        for (int i = 0; i < s.size(); i++) {
+            word = "";
+            for (; i < s.size(); i++) {
+                if (s[i]  == ' ') {
+                    if (_isType(word)) {
+                        bool flg = 0;
+                        for (int j = i; j < s.size(); j++) if (s[j] == '(') flg = 1;
+                        if (flg) {
+                            met = "";
+                            for (i++; i < s.size(); i++) {
+                                if (s[i] == ')') {
+                                    met += s[i];
+                                    cout << ++t << ". " << met << ", return type: " << word << endl;
+                                    word = "";
+                                    if (met == "main(String [] args)") return 0;
+                                    break;
+                                }
+                                else met += s[i];
                             }
                         }
+                        else {
+                            word = "";
+                            break;
+                        }
+                    }
+                    else {
+                        word = "";
+                        break;
                     }
                 }
+                else word += s[i];
             }
-            cout << met << ", return type: " << ret << endl;
         }
     }
+}
