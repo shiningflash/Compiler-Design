@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string _type[10] = {"auto", "double", "int",  "enum", "char", "float", "short", "void",
-"bool", "long"};
+string _type[10] = {"auto", "double", "int", "enum", "char", "float", "short", "void", "bool", "long"};
 
 bool _isType(string s) {
-    for (int i = 0; i < 50; i++) if (s == _type[i]) return true;
+    for (int i = 0; i < 10; i++) if (s == _type[i]) return true;
     return false;
 }
 
